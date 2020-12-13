@@ -1,7 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from tkinter import *
 import tkinter.font as font
+from tkinter import *
+
 
 window = Tk()
 
@@ -9,12 +10,12 @@ class GetEntry():
     def __init__(self, window):
         width = 5
         self.window=window
-        self.entry_contents1=None
-        self.entry_contents2=None
-        self.entry_contents3=None
-        self.entry_contents4=None
-        self.entry_contents5=None
-        self.entry_contents6=None
+        self.entry_contents1=0
+        self.entry_contents2=0
+        self.entry_contents3=0
+        self.entry_contents4=0
+        self.entry_contents5=0
+        self.entry_contents6=0
 
         self.e1 = Entry(window, width=width, font=18)
         self.e1.insert(0, 0)
@@ -46,7 +47,7 @@ class GetEntry():
                command=self.callback).grid(row=10, column=0)
 
     def callback(self):
-        """ get the contents of the Entry and exit
+        """ get the contents of the Entry
         """
         self.entry_contents1=self.e1.get()
         self.entry_contents2=self.e2.get()
@@ -63,11 +64,13 @@ GE=GetEntry(window)
 def close_window():
     window.destroy()
     exit
+
+
 Button(window, text="run", width=10, font=18,
                command=close_window).grid(row=11, column=0)
 
-Label(window, text="Function 1: ", font=(18)).grid(row=0)
-Label(window, text="Function 2: ", font=(18)).grid(row=1)
+Label(window, text="1. function: ", font=(18)).grid(row=0)
+Label(window, text="2. function: ", font=(18)).grid(row=1)
 Label(window, text="x² ", font=(22)).grid(row=0, column=2)
 Label(window, text="x² ", font=(22)).grid(row=1, column=2)
 Label(window, text="x ", font=(22)).grid(row=0, column=4)
@@ -78,8 +81,8 @@ Label(window, text="use . as decimal seperation", font=(22)).grid(row=12, column
 
 window.mainloop()
 
-a1, a2, a3 = float(GE.entry_contents1), float(GE.entry_contents2), float(GE.entry_contents3)   # a1*x² + a2*x + a3, quadratic function 1
-a4, a5, a6 = float(GE.entry_contents4), float(GE.entry_contents5), float(GE.entry_contents6)    # a4*x² + a5*x + a6, quadratic function 2
+a1, a2, a3 = float(GE.entry_contents1), float(GE.entry_contents2), float(GE.entry_contents3)   # a1*x² + a2*x + a3, quadratic 1. function
+a4, a5, a6 = float(GE.entry_contents4), float(GE.entry_contents5), float(GE.entry_contents6)    # a4*x² + a5*x + a6, quadratic 2. function
 exp1, exp2, exp3 = 2, 1, 0
 
 """
@@ -238,8 +241,15 @@ if a4 != 0:
 else:
     Zero_value2_2, Zero2_2, ex_str2 = der_1_zero(m=a5, b=a6)
 
+
+""" 
+calculates the interception between both motherfunctions
+"""
 x_inter, y_inter = intercept_sqr_func(p1_k1=a1, p1_k2=a2, p1_k3=a3, p2_k1=a4, p2_k2=a5, p2_k3=a6)
 
+"""
+determines the outer bounds of the plot
+"""
 size_x, size_x1, size_x_inter = size(list=Zero_value1_1), size(list=Zero_value2_1), size(list=x_inter)
 if size_x1 > size_x:
     if size_x1 > size_x_inter:
@@ -249,11 +259,15 @@ if size_x1 > size_x:
 elif size_x_inter > size_x:
     size_x = size_x_inter
 
-if size_x > 5:
+if size_x > 10:
     x = np.linspace(start=-size_x-1, stop=size_x+1, num=100_000)
 else:
-    x = np.linspace(start=-5, stop=5, num=100_000)
+    x = np.linspace(start=-10, stop=10, num=100_000)
 
+
+"""
+here the plotting is happening 
+"""
 y1_1_list, y1_2_list, y1_3_list = [], [], []
 y2_1_list, y2_2_list, y2_3_list = [], [], []
 
@@ -280,6 +294,10 @@ for a in x:
 label_1, label_2 = label_str(k1=a1), label_str(k1=a4)
 
 plt.rcParams.update({'font.size': 14})
+
+"""
+plots the 1. function, its derivative, the x-axis interception points and the maximum/minimum of that function
+"""
 if a1 or a2 != 0:
     plt.plot(x, y1_1_list, color="b", label=f"1. function, type: {label_1}")
     plt.plot(x, y1_2_list, color="dodgerblue", label=f"1. function, 1. derivative")
@@ -288,11 +306,11 @@ if Zero_value1_1[0] is np.NaN and a1 != 0:
     textstr = "no x-axis interception"
     plt.text(-5,5, textstr, fontsize=15, color="royalblue")
     plt.plot(Zero_value1_2, Zero1_2, ".", color="green")
-    plt.plot(Zero_value1_2, Zero_yvalue1_1, ".", color="green", label=f"function 1, {ex_str1}, x={round(Zero_value1_2, 3)}, y={round(Zero_yvalue1_1, 3)}")
+    plt.plot(Zero_value1_2, Zero_yvalue1_1, ".", color="green", label=f"1. function, {ex_str1}, x={round(Zero_value1_2, 3)}, y={round(Zero_yvalue1_1, 3)}")
 elif Zero_value1_1[0] is not np.NaN and a1 != 0:
     plt.plot(Zero_value1_1, Zero1_1, ".", color="r", label=f"1. function x-axis interception: {round(Zero_value1_1[0], 3)} // {round(Zero_value1_1[-1], 3)}")
     plt.plot(Zero_value1_2, Zero1_2, ".", color="green")
-    plt.plot(Zero_value1_2, Zero_yvalue1_1, ".", color="green", label=f"function 1, {ex_str1}, x={round(Zero_value1_2, 3)}, y={round(Zero_yvalue1_1, 3)}",)
+    plt.plot(Zero_value1_2, Zero_yvalue1_1, ".", color="green", label=f"1. function, {ex_str1}, x={round(Zero_value1_2, 3)}, y={round(Zero_yvalue1_1, 3)}",)
 elif Zero_value1_1[0] is not np.NaN and a1 == 0:
     plt.plot(Zero_value1_1, Zero1_1, ".", color="r", label=f"1. function x-axis interception: {round(Zero_value1_1[0], 3)}")
 elif Zero_value1_1[0] is np.NaN and a2 != 0:
@@ -302,6 +320,9 @@ else:
     plt.text(-5,5, textstr, fontsize=15, color="royalblue")
 
 
+"""
+plots the 2. function, its derivative, the x-axis interception points and the maximum/minimum of that function
+"""
 if a4 or a5 != 0:
     plt.plot(x, y2_1_list, color="darkorange", label=f"2. function, type: {label_2}")
     plt.plot(x, y2_2_list, color="orange", label=f"2. function, 1. derivative of")
@@ -310,11 +331,11 @@ if Zero_value2_1[0] is np.NaN and a4 != 0:
     textstr = "no x-axis interception"
     plt.text(1.5,5, textstr, fontsize=15, color="darkorange")
     plt.plot(Zero_value2_2, Zero2_2, ".", color="green")
-    plt.plot(Zero_value2_2, Zero_yvalue2_1, ".", color="green", label=f"function 2, {ex_str2}, x={round(Zero_value2_2, 3)}, y={round(Zero_yvalue2_1, 3)}")
+    plt.plot(Zero_value2_2, Zero_yvalue2_1, ".", color="green", label=f"2. function, {ex_str2}, x={round(Zero_value2_2, 3)}, y={round(Zero_yvalue2_1, 3)}")
 elif Zero_value2_1[0] is not np.NaN and a4 != 0:
     plt.plot(Zero_value2_1, Zero2_1, ".", color="r", label=f"2. function x-axis interception: {round(Zero_value2_1[0], 3)} // {round(Zero_value2_1[-1], 3)}")
     plt.plot(Zero_value2_2, Zero2_2, ".", color="green")
-    plt.plot(Zero_value2_2, Zero_yvalue2_1, ".", color="green", label=f"function 2, {ex_str2}, x={round(Zero_value2_2, 3)}, y={round(Zero_yvalue2_1, 3)}")
+    plt.plot(Zero_value2_2, Zero_yvalue2_1, ".", color="green", label=f"2. function, {ex_str2}, x={round(Zero_value2_2, 3)}, y={round(Zero_yvalue2_1, 3)}")
 elif Zero_value2_1[0] is not np.NaN and a4 == 0:
     plt.plot(Zero_value2_1, Zero2_1, ".", color="r")
 elif Zero_value2_1[0] is np.NaN and a2 != 0:
@@ -326,13 +347,21 @@ else:
 if size_x > 5:
     plt.xlim(-size_x-2, size_x+2)
 else:
-    plt.xlim(-6, 6)
-if y1_1_list[0] and y2_1_list[0] is np.NaN:
-    plt.ylim(-6, 6)
+    plt.xlim(-10, 10)
+if a1 == 0:
+    if a2 == 0:
+        if a4 == 0:
+            if a5 == 0:
+                plt.ylim(-10, 10)
 
-if (a1 + a2) * (a4 + a5) == 0:
-    textstr = "no function interception"
-    plt.text(1,-5, textstr, fontsize=15, color="k")
+
+"""
+plots the interception between both functions, if the first two coefficients of the functions are 0, nothing happens
+"""
+if a1 + a2 == 0:
+    "nothing"
+elif a4 + a5 == 0:
+    "nothing"
 elif x_inter[0] and x_inter[-1] is np.NaN:
     textstr = "no function interception"
     plt.text(1,-5, textstr, fontsize=15, color="k")
