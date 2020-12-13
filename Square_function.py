@@ -266,7 +266,7 @@ else:
 
 
 """
-here the plotting is happening 
+calculates the y-coordinate from the x numpy array
 """
 y1_1_list, y1_2_list, y1_3_list = [], [], []
 y2_1_list, y2_2_list, y2_3_list = [], [], []
